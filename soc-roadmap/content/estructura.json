@@ -1,0 +1,396 @@
+{
+  "meses": [
+    {
+      "n": 1,
+      "t": "Redes, Windows y Linux",
+      "d": "Las bases que el resto de la ruta da por sentadas: redes, Windows, Linux en terminal y logs. Arranca la ruta SOC L1 de THM con Blue Team Introduction. Cierra con un checkpoint final.",
+      "activo": true,
+      "semanas": [
+        {
+          "n": 1,
+          "t": "Fundamentos de red, primera VM y qué es un SOC",
+          "d": "OSI, IPv4 y subnetting, tu primera VM Windows, MAC/ARP/TCP y qué hace un SOC. Foco: bases de red y arrancar Linux con Bandit.",
+          "dias": [
+            {
+              "n": 1, "nombre": "Lunes",
+              "t": "Modelo OSI y TCP/IP",
+              "d": "Capas, encapsulación y qué dispositivo trabaja en cada una. Primera captura en Wireshark.",
+              "temas": ["Modelo OSI (7 capas) y TCP/IP (4 capas)", "PDU por capa: datos, segmento, paquete, trama y bits", "Encapsulación y desencapsulación", "Dispositivo por capa: hub, switch, router y firewall"],
+              "prac": [
+                "**Linux (45 min):** estructura de directorios (`/`, `/home`, `/etc`, `/var/log`, `/tmp`, `/usr`, `/bin`), `pwd`, `ls -la`, `cd`. Bandit niveles 0-1.",
+                "**Red (45 min):** `ip a`, `ip route`, `ss -tulpn`. Instala Wireshark, captura 30 s y localiza Ethernet, IP y TCP dentro de un paquete.",
+                "**Notas:** explica con tus palabras qué pasa con un mensaje desde que sale de tu navegador hasta que llega al cable."
+              ]
+            },
+            {
+              "n": 2, "nombre": "Martes",
+              "t": "IPv4 y subnetting básico",
+              "d": "Binario a decimal, IPs privadas y públicas, máscara, CIDR, red y broadcast.",
+              "temas": ["Octetos y conversión binario ↔ decimal", "IPs privadas (10/8, 172.16/12, 192.168/16), públicas, loopback y APIPA", "Máscara, CIDR, dirección de red, broadcast, rango de hosts y gateway"],
+              "prac": [
+                "**Linux:** `cat`, `cp`, `mv`, `mkdir`, `touch`, `rm`. Bandit niveles 2-3.",
+                "**Red:** calcula a mano 10 subredes (/24, /25, /26, /27, /16) y verifica con `ipcalc`.",
+                "Ejercicio: ¿están 192.168.1.50 y 192.168.1.130 en la misma red con /25? ¿Y con /24?",
+                "Clasifica como privadas o públicas las IPs de tu captura del lunes."
+              ]
+            },
+            {
+              "n": 3, "nombre": "Miércoles",
+              "t": "Windows base",
+              "d": "Procesos, servicios, cuentas, SID, UAC, NTFS y carpetas clave. Tu primera VM Windows.",
+              "temas": ["Procesos e hilos, relación padre-hijo", "Servicios, cuentas, grupos y SID", "UAC y NTFS", "Carpetas clave de Windows"],
+              "prac": []
+            },
+            {
+              "n": 4, "nombre": "Jueves",
+              "t": "MAC, ARP, TCP vs UDP y puertos",
+              "d": "Cómo se habla la red local, el handshake de TCP y los puertos que debes saber de memoria.",
+              "temas": ["MAC y ARP", "TCP vs UDP, handshake y flags", "Puertos comunes y sockets"],
+              "prac": []
+            },
+            {
+              "n": 5, "nombre": "Viernes",
+              "t": "Qué es un SOC y el rol del L1",
+              "d": "Niveles L1/L2/L3, ciclo de vida de una alerta, verdaderos y falsos positivos. Primeras rooms de THM.",
+              "temas": ["SOC: personas, procesos y tecnología", "L1, L2 y L3", "Ciclo de vida de una alerta", "TP, FP, TN, FN", "SIEM, EDR y SOAR (solo concepto)"],
+              "prac": [
+                "**Linux:** repaso con Bandit hasta donde llegues.",
+                "**THM (ruta SOC L1):** *Junior Security Analyst Intro* y *SOC Role in Blue Team*.",
+                "**Escribe** media página: \"Un día de un analista L1\"."
+              ]
+            },
+            {
+              "n": 6, "nombre": "Sábado",
+              "t": "Laboratorio: tu red virtual",
+              "d": "Dos VMs en red aislada, ping entre ellas, capturas de ARP e ICMP y diagrama del laboratorio. Incluye mini-checkpoint.",
+              "temas": ["Sin teoría nueva: práctica pura (3 h)"],
+              "prac": [
+                "Crea una red virtual (host-only o NAT) con tu VM Linux y tu VM Windows.",
+                "Haz ping entre ambas y captura el ARP y el ICMP en Wireshark.",
+                "Dibuja un diagrama del laboratorio (IPs, máscara, gateway), súbelo a GitHub y toma snapshots de las dos VMs.",
+                "**Reparto de las 3 h:** 1 h montar y ejecutar, 1 h analizar la evidencia, 1 h escribir y subir a GitHub."
+              ]
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "t": "Protocolos de aplicación, permisos y primer Wireshark",
+          "d": "DNS, DHCP, ICMP, NAT, permisos NTFS, servicios y tareas programadas, HTTP/TLS y filtros de Wireshark. Foco: ver cada protocolo en una captura.",
+          "dias": [
+            {
+              "n": 1, "nombre": "Lunes",
+              "t": "DNS",
+              "d": "Cómo se resuelve un nombre, tipos de registro, TTL y qué ataques viven en DNS.",
+              "temas": ["Estructura de un dominio", "Recorrido de una resolución", "Registros A, AAAA, CNAME, MX, TXT, NS, PTR", "TTL, caché y RCODE", "DNS y seguridad"],
+              "prac": [
+                "**Linux:** `nano`, `grep`, `grep -i`, `grep -v`. Bandit niveles 6-7.",
+                "**Red:** `nslookup` y `dig` a 5 dominios. Pide A, AAAA, MX, TXT y NS (por ejemplo `nslookup -type=MX gmail.com`).",
+                "Captura una consulta DNS en Wireshark (filtro `dns`) y localiza consulta y respuesta.",
+                "Consulta el TXT de `gmail.com` y el `_dmarc` de `gmail.com`: anota la política (`p=`).",
+                "**THM (apoyo):** DNS in Detail."
+              ]
+            },
+            {
+              "n": 2, "nombre": "Martes",
+              "t": "DHCP, ICMP y NAT",
+              "d": "Cómo obtiene IP un equipo (DORA), qué es el ping, cómo funciona traceroute y por qué tu IP privada no es la que ve Internet.",
+              "temas": ["DHCP y el proceso DORA", "ICMP, TTL y traceroute", "NAT y PAT", "Seguridad: rogue DHCP, túnel ICMP, logs de NAT"],
+              "prac": [
+                "**Linux:** permisos `rwx`, lectura de `-rwxr-xr--`, `chmod`, `chown`. Bandit niveles 8-9.",
+                "**Red:** libera y renueva la IP de tu VM (`dhclient -r` y `dhclient` en Linux; `ipconfig /release` y `/renew` en Windows) y captura el DORA con el filtro `bootp` (o `dhcp`).",
+                "Haz `traceroute` (Linux) y `tracert` (Windows) y compáralos con lo capturado."
+              ]
+            },
+            {
+              "n": 3, "nombre": "Miércoles",
+              "t": "Permisos NTFS, servicios y tareas programadas",
+              "d": "Quién puede hacer qué sobre un archivo, cómo arranca un servicio y por qué las tareas programadas son persistencia.",
+              "temas": ["ACL, ACE y permisos efectivos", "Herencia y NTFS vs share", "Servicios: tipos de inicio y cuentas", "Tareas programadas y Event ID 4698"],
+              "prac": [
+                "**Linux:** usuarios y grupos (`whoami`, `id`, `sudo`, `su`, `/etc/passwd`, `/etc/shadow`). **THM (apoyo):** Linux Fundamentals Part 2.",
+                "**Windows:** crea 2 usuarios, un grupo y una carpeta con permisos distintos, y comprueba qué puede hacer cada uno (`icacls`).",
+                "Lista servicios y tareas programadas con PowerShell (`Get-Service`, `Get-ScheduledTask`).",
+                "**THM (apoyo):** Windows Fundamentals 2."
+              ]
+            },
+            {
+              "n": 4, "nombre": "Jueves",
+              "t": "HTTP, HTTPS y TLS",
+              "d": "Métodos, códigos de estado, headers, cookies y qué sigue visible cuando el tráfico va cifrado.",
+              "temas": ["Métodos GET y POST", "Códigos de estado: 200, 301, 403, 404, 500", "Headers y cookies", "Qué cifra TLS y qué sigue visible (IP y SNI)"],
+              "prac": [
+                "**Linux:** `find`, `curl -I`, `wget`. Bandit nivel 10.",
+                "**Red:** captura una petición HTTP y otra HTTPS y compara qué puedes leer (Follow → TCP Stream).",
+                "**THM (apoyo):** HTTP in Detail."
+              ]
+            },
+            {
+              "n": 5, "nombre": "Viernes",
+              "t": "Wireshark: interfaz y filtros",
+              "d": "Interfaz, filtros de visualización y de captura, seguir un flujo TCP. Room de la ruta SOC L1.",
+              "temas": ["Interfaz de Wireshark", "Filtros de captura vs de visualización", "Follow TCP Stream"],
+              "prac": [
+                "**Linux:** repaso de la semana.",
+                "**THM (ruta SOC L1):** *Wireshark: The Basics*.",
+                "Domina 8 filtros: `ip.addr==`, `tcp.port==`, `http`, `dns`, `icmp`, `tcp.flags.syn==1`, `frame contains \"texto\"`, `!arp`."
+              ]
+            },
+            {
+              "n": 6, "nombre": "Sábado",
+              "t": "Laboratorio: tus primeros PCAPs",
+              "d": "Dos PCAPs reales de malware-traffic-analysis.net analizados y resumidos. Incluye mini-checkpoint.",
+              "temas": ["Sin teoría nueva: práctica pura (3 h)"],
+              "prac": [
+                "Descarga 2 PCAPs de malware-traffic-analysis.net. **Hazlo solo dentro de una VM** y respeta la contraseña del ZIP que indica el sitio.",
+                "Para cada uno lista IPs más activas, dominios y protocolos, y escribe 10 líneas de qué crees que pasó.",
+                "En Linux crea un usuario y un archivo con permisos solo para su grupo y verifica que funcione."
+              ]
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "t": "Procesos, servicios, escaneo y PowerShell",
+          "d": "tcpdump y nmap, cómo luce un escaneo en una captura, servicios en Linux y Windows, PowerShell e ingeniería social. Foco: reconocer un SYN scan y mover logs con soltura.",
+          "dias": [
+            {
+              "n": 1, "nombre": "Lunes",
+              "t": "tcpdump y nmap básico",
+              "d": "Capturar desde la terminal y escanear tu propia VM.",
+              "temas": ["Filtros de captura por host, puerto y protocolo", "Estados de puerto: open, closed, filtered", "Opciones `-sS`, `-sV`, `-p`"],
+              "prac": [
+                "**Linux:** `ps aux`, `top`, `kill`, `ss -tulpn`.",
+                "**Red:** `sudo tcpdump -i <interfaz> -w captura.pcap`. Escanea tu VM Windows con nmap mientras capturas.",
+                "**THM (apoyo):** rooms básicas de tcpdump y Nmap."
+              ]
+            },
+            {
+              "n": 2, "nombre": "Martes",
+              "t": "Cómo luce un SYN scan",
+              "d": "Muchos SYN a puertos distintos desde un solo origen, y RST de vuelta.",
+              "temas": ["Patrón de un SYN scan en una captura", "Un solo origen, muchos puertos, respuestas RST"],
+              "prac": [
+                "**Linux:** `systemctl status/start/stop`, `journalctl -u`. Bandit niveles 11-12.",
+                "**Red:** abre la captura de ayer en Wireshark, encuentra el escaneo y anota cómo lo reconocerías sin saber que fuiste tú."
+              ]
+            },
+            {
+              "n": 3, "nombre": "Miércoles",
+              "t": "Registro, inicio automático y servicios",
+              "d": "Dónde se esconde la persistencia en Windows y cómo lo ves desde Linux por SSH.",
+              "temas": ["Registro de Windows (idea general)", "Claves de inicio automático", "Tareas programadas y servicios"],
+              "prac": [
+                "**Linux:** `apt update`, `apt install`, `ssh`. **THM (apoyo):** Linux Fundamentals Part 3.",
+                "**Windows:** `Get-Service`, `Get-ScheduledTask`.",
+                "Conéctate por SSH de una VM a la otra."
+              ]
+            },
+            {
+              "n": 4, "nombre": "Jueves",
+              "t": "PowerShell",
+              "d": "Cmdlets, pipeline y 15 comandos que usarás como analista.",
+              "temas": ["Cmdlets verbo-sustantivo", "Pipeline, `Get-Help`, `Where-Object`, `Select-Object`, `Sort-Object`, `Get-ChildItem`"],
+              "prac": [
+                "**Linux:** `scp`, `curl`. Bandit niveles 13-15.",
+                "**Windows:** 15 comandos de PowerShell (procesos, servicios, usuarios, `Get-NetTCPConnection`, archivos recientes). Guárdalos con descripción.",
+                "**THM (apoyo):** la room básica de PowerShell."
+              ]
+            },
+            {
+              "n": 5, "nombre": "Viernes",
+              "t": "Humans as Attack Vectors",
+              "d": "Por qué se ataca a las personas y cómo ayuda el SOC. Room de la ruta SOC L1.",
+              "temas": ["Phishing, pretexting y credenciales débiles", "Cómo ayuda el SOC a defender a las personas"],
+              "prac": [
+                "**Linux:** repite Bandit 0-5 sin mirar tus notas.",
+                "**THM (ruta SOC L1):** *Humans as Attack Vectors*.",
+                "Escribe 5 líneas: ¿qué ataque contra personas verías en un SOC y qué evidencia dejaría?"
+              ]
+            },
+            {
+              "n": 6, "nombre": "Sábado",
+              "t": "Laboratorio: escaneos y comparación",
+              "d": "Escanea tus dos VMs, compara resultados y encuentra el patrón en la captura. Incluye mini-checkpoint.",
+              "temas": ["Sin teoría nueva: práctica pura (3 h)"],
+              "prac": [
+                "Escanea tus dos VMs con nmap (`-sS`, `-sV`) y compara resultados.",
+                "Captura todo y encuentra el patrón del escaneo.",
+                "Sube tus 15 comandos de PowerShell a GitHub."
+              ]
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "t": "Logs, Event IDs y análisis con pipes",
+          "d": "Event Viewer, los Event IDs clave, logs de Linux y one-liners con pipes. La semana más importante para SOC: aprender a leer logs.",
+          "dias": [
+            {
+              "n": 1, "nombre": "Lunes",
+              "t": "Event Viewer y Event IDs",
+              "d": "Logs Security, System y Application, y los IDs que más verás: 4624, 4625, 4672, 4688, 4720, 4732, 7045, 1102.",
+              "temas": ["Logs Security, System y Application", "4624 login exitoso, 4625 fallido, 4634 logoff, 4672 privilegios especiales", "4688 proceso creado (requiere auditoría), 4720 usuario creado, 4732 añadido a grupo", "7045 servicio instalado, 1102 log borrado"],
+              "prac": [
+                "**Linux:** redirección y pipes: `|`, `>`, `>>`, `2>`.",
+                "**Windows:** abre Event Viewer y localiza cada ID en tu VM."
+              ]
+            },
+            {
+              "n": 2, "nombre": "Martes",
+              "t": "Anatomía de un evento",
+              "d": "Hora, cuenta, tipo de logon (2, 3, 10) e IP de origen.",
+              "temas": ["Campos de un evento de seguridad", "Tipos de logon: 2 interactivo, 3 red, 10 RDP"],
+              "prac": [
+                "**Linux:** `grep -E`, `cut`, `sort`, `uniq -c`, `sort -nr`.",
+                "**Windows:** genera a propósito un login fallido, un usuario nuevo y su alta en un grupo, y encuentra los eventos."
+              ]
+            },
+            {
+              "n": 3, "nombre": "Miércoles",
+              "t": "Logs de Linux",
+              "d": "auth.log, secure, syslog y journalctl. Lees fallos de SSH y los comparas con Windows.",
+              "temas": ["`/var/log/auth.log` o `/var/log/secure`, `syslog`, `journalctl`"],
+              "prac": [
+                "**Linux:** `awk '{print $N}'`, `tr`, `sed` (lo básico). Genera intentos de SSH fallidos con contraseña incorrecta y léelos en `auth.log`.",
+                "**Windows:** `Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625}`."
+              ]
+            },
+            {
+              "n": 4, "nombre": "Jueves",
+              "t": "Error humano o ataque",
+              "d": "Cantidad, rapidez, origen, usuarios probados y éxito posterior: cómo decides.",
+              "temas": ["Criterios para distinguir error humano de fuerza bruta"],
+              "prac": [
+                "**Linux:** one-liner que cuente fallos por IP, por ejemplo `grep \"Failed password\" auth.log | awk '{print $11}' | sort | uniq -c | sort -nr` (ajusta la columna a tu log).",
+                "**Windows:** activa la auditoría de creación de procesos y verifica el 4688."
+              ]
+            },
+            {
+              "n": 5, "nombre": "Viernes",
+              "t": "Systems as Attack Vectors",
+              "d": "Vulnerabilidades, malas configuraciones, parches y qué señales dejan. Room de la ruta SOC L1.",
+              "temas": ["Vulnerabilidades y malas configuraciones", "Qué señales dejan en los logs"],
+              "prac": [
+                "**Linux:** repaso de comandos.",
+                "**THM (ruta SOC L1):** *Systems as Attack Vectors*.",
+                "Relaciona cada evento que generaste esta semana con el tipo de ataque que podría representar.",
+                "Los frameworks (Pyramid of Pain, Kill Chain, MITRE) **no** los hagas todavía: son del mes 2."
+              ]
+            },
+            {
+              "n": 6, "nombre": "Sábado",
+              "t": "Laboratorio: SSH y RDP fallidos",
+              "d": "Comparas el mismo ataque visto en Linux (auth.log) y en Windows (4625). Incluye mini-checkpoint.",
+              "temas": ["Sin teoría nueva: práctica pura (3 h)"],
+              "prac": [
+                "Haz 10 intentos fallidos por SSH contra Linux y 10 por RDP o SMB contra Windows.",
+                "Encuentra en Linux (`auth.log`) y en Windows (4625) hora, IP de origen y usuario.",
+                "Redacta una comparación de 10 líneas."
+              ]
+            }
+          ]
+        },
+        {
+          "n": 5,
+          "t": "Integración, Bash y checkpoint final",
+          "d": "Tres escenarios completos (escaneo, fuerza bruta y persistencia), scripts de Bash, cron y el checkpoint final del mes. Foco: unir todo y demostrarlo.",
+          "dias": [
+            {
+              "n": 1, "nombre": "Lunes",
+              "t": "Escenario 1: escaneo detectado",
+              "d": "Qué evidencia buscas y dónde. Mini-reporte con qué, quién, cuándo y cómo lo detectaste.",
+              "temas": ["Evidencia de un escaneo en Wireshark y en Windows"],
+              "prac": [
+                "**Linux:** Bash: variables, argumentos (`$1`), `if`.",
+                "**Escenario:** nmap completo contra Windows. Evidencia en Wireshark y en Windows.",
+                "Mini-reporte: qué pasó, quién, cuándo y cómo lo detectaste."
+              ]
+            },
+            {
+              "n": 2, "nombre": "Martes",
+              "t": "Escenario 2: fuerza bruta",
+              "d": "Línea de tiempo y criterios para decidir si escalar.",
+              "temas": ["Línea de tiempo de un ataque de fuerza bruta", "Criterios para escalar"],
+              "prac": [
+                "**Linux:** `for` y `while`.",
+                "**Escenario:** ataque de login fallido con un login exitoso al final.",
+                "Reporte: ¿error humano o ataque?"
+              ]
+            },
+            {
+              "n": 3, "nombre": "Miércoles",
+              "t": "Escenario 3: persistencia simple",
+              "d": "Usuario nuevo, grupo de administradores y tarea programada: encuentra los eventos y redáctalos.",
+              "temas": ["Persistencia con usuario, grupo y tarea programada"],
+              "prac": [
+                "**Linux:** script que reciba un log y muestre las 5 IPs con más intentos fallidos.",
+                "**Escenario:** crea el usuario y la tarea, encuentra los eventos y redáctalos."
+              ]
+            },
+            {
+              "n": 4, "nombre": "Jueves",
+              "t": "Refuerzo de huecos",
+              "d": "Repasas lo que fallaste en los mini-checkpoints de las semanas 1 a 4.",
+              "temas": ["Repaso dirigido según tus errores"],
+              "prac": [
+                "Revisa los errores de los 4 mini-checkpoints.",
+                "Repite las rooms o prácticas que flojearon.",
+                "Reintenta Bandit en el nivel donde te quedaste."
+              ]
+            },
+            {
+              "n": 5, "nombre": "Viernes",
+              "t": "cron, GitHub y cierre del módulo",
+              "d": "README, estructura del repositorio y recap de Blue Team Introduction en THM.",
+              "temas": ["`cron`", "Organización del repositorio y README"],
+              "prac": [
+                "Sube a GitHub el script con README.",
+                "**THM (ruta SOC L1):** *Topic Transition Recap* (preguntas de las rooms del módulo).",
+                "Resumen de una página del mes."
+              ]
+            },
+            {
+              "n": 6, "nombre": "Sábado",
+              "t": "Checkpoint final del mes 1",
+              "d": "Sin buscar: parte oral, un PCAP nuevo, tres eventos de Windows y cinco retos de Linux.",
+              "temas": ["Checkpoint (3 h)"],
+              "prac": [
+                "**Parte oral (30 min):** responde las preguntas del examen de abajo en voz alta.",
+                "**Parte práctica de red (45 min):** con un PCAP que no hayas visto, encuentra las IPs principales, dominios, protocolos y algo sospechoso. Redacta 10 líneas.",
+                "**Parte de logs (45 min):** genera 3 eventos distintos en Windows y encuéntralos sin guía.",
+                "**Parte de Linux (60 min):** (1) crea un directorio y un archivo con permisos solo para tu usuario; (2) muestra los puertos en escucha y el proceso que los usa; (3) dado un log, cuenta IPs únicas ordenadas por frecuencia; (4) encuentra los archivos modificados en las últimas 24 h; (5) escribe un `for` que haga ping a 5 IPs.",
+                "**Aprobado si:** 8 de 10 preguntas orales, PCAP en menos de 45 min, 3 eventos de Windows sin ayuda y 4 de 5 de Linux con el one-liner funcionando a la primera. Si no, una semana de refuerzo antes del mes 2."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "n": 2, "t": "SOC L1 en THM: triage, SIEM y frameworks",
+      "d": "SOC Team Internals, Core SOC Solutions, Cyber Defence Frameworks y Threat Analysis Tools.",
+      "activo": false, "semanas": []
+    },
+    {
+      "n": 3, "t": "Monitoreo y laboratorio propio",
+      "d": "Network Security Monitoring, Windows y Linux Security Monitoring, y tu laboratorio con Wazuh + Sysmon.",
+      "activo": false, "semanas": []
+    },
+    {
+      "n": 4, "t": "Investigación de incidentes",
+      "d": "Phishing, Web Security Monitoring, Malware y SIEM Triage. Proyectos documentados y primeras postulaciones.",
+      "activo": false, "semanas": []
+    },
+    {
+      "n": 5, "t": "Capstones y certificación",
+      "d": "Tempest y Boogeyman, SOC Simulator, certificación según las ofertas y entrevistas simuladas.",
+      "activo": false, "semanas": []
+    },
+    {
+      "n": 6, "t": "Portafolio y empleo",
+      "d": "Portafolio terminado, CV, entrevistas y aplicaciones constantes.",
+      "activo": false, "semanas": []
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "1-1-3": {
+    "titulo": "Examen · Windows base",
+    "intro": "Contéstalo sin mirar tus notas. Las preguntas abiertas entrenan el recuerdo, no solo el reconocimiento.",
+    "preguntas": [
+      {"t": "mc", "q": "¿Cuál es la diferencia entre un programa y un proceso?", "o": ["Un programa es el archivo en disco; un proceso es ese programa ya en ejecución", "Un programa corre en segundo plano; un proceso tiene interfaz gráfica", "Son lo mismo con distinto nombre", "Un proceso es un archivo y un programa es una cuenta de usuario"], "c": 0, "w": "El programa es el ejecutable guardado. Al ejecutarlo se crea un proceso con su PID, su memoria y su usuario."},
+      {"t": "mc", "q": "Ves que winword.exe lanza powershell.exe. ¿Qué indica esta relación padre-hijo?", "o": ["Es normal, Word siempre usa PowerShell", "Es muy sospechoso: podría ser un documento malicioso ejecutando comandos", "Solo significa que Word se actualizó", "Indica que PowerShell está dañado"], "c": 1, "w": "Las aplicaciones de Office no suelen lanzar shells. Es un indicador clásico de macros o documentos maliciosos."},
+      {"t": "mc", "q": "¿Dónde debe vivir un svchost.exe legítimo?", "o": ["C:\\Users\\<usuario>\\AppData", "C:\\Windows\\Temp", "C:\\Windows\\System32", "C:\\ProgramData"], "c": 2, "w": "svchost.exe legítimo está en System32. Si corre desde AppData, Temp o ProgramData, probablemente es malware disfrazado."},
+      {"t": "mc", "q": "¿Qué diferencia hay entre un servicio y un proceso?", "o": ["Los servicios no usan memoria", "Un servicio corre en segundo plano y lo administra services.exe; todo servicio activo aparece como proceso", "Los procesos solo existen en Linux", "Un servicio siempre requiere que un usuario inicie sesión"], "c": 1, "w": "Todo servicio en ejecución es un proceso, pero no todo proceso es un servicio."},
+      {"t": "mc", "q": "Un SID termina en -500. ¿Qué significa?", "o": ["Es la cuenta Guest", "Es un usuario creado recientemente", "Es la cuenta Administrator integrada, aunque le hayan cambiado el nombre", "Es una cuenta de servicio"], "c": 2, "w": "RID 500 = Administrator integrado, 501 = Guest, 1000 en adelante = cuentas creadas por usuarios."},
+      {"t": "mc", "q": "¿Qué hace UAC (User Account Control)?", "o": ["Cifra todos los archivos del disco", "Bloquea todo el tráfico de red", "Pide confirmación antes de ejecutar acciones con privilegios elevados", "Borra archivos temporales"], "c": 2, "w": "Un administrador recibe dos tokens (estándar y completo). UAC pide confirmación para elevar. Los atacantes buscan eludirlo (UAC bypass)."},
+      {"t": "mc", "q": "¿Cuál de estas ubicaciones es la menos esperada para un ejecutable legítimo en ejecución?", "o": ["C:\\Program Files", "C:\\Windows\\System32", "C:\\Users\\<usuario>\\AppData\\Local\\Temp", "C:\\Program Files (x86)"], "c": 2, "w": "El malware usa carpetas escribibles por el usuario (Temp, AppData, Downloads, ProgramData). El software legítimo vive en Program Files o System32."},
+      {"t": "mc", "q": "Un atacante instala un servicio nuevo para mantener acceso tras reiniciar. ¿Qué indicador y qué Event ID corresponden?", "o": ["Persistencia mediante servicio; Event ID 7045", "Fuerza bruta; Event ID 4625", "Borrado de logs; Event ID 1102", "Login exitoso; Event ID 4624"], "c": 0, "w": "El 7045 registra la instalación de un servicio. Instalar servicios es una forma común de persistencia."},
+      {"t": "open", "q": "Nombra de memoria 5 procesos legítimos de Windows y qué hace cada uno.", "m": "System (PID 4, kernel), smss.exe (Session Manager), csrss.exe (subsistema cliente/servidor), wininit.exe (inicializa el sistema), services.exe (administra los servicios), lsass.exe (autenticación y credenciales), svchost.exe (aloja servicios), explorer.exe (escritorio y explorador de archivos)."},
+      {"t": "open", "q": "¿Qué tres datos revisas de un proceso para decidir si es sospechoso?", "m": "Su relación padre-hijo (PPID), la ruta del ejecutable y la ortografía del nombre. También ayuda saber con qué usuario corre."},
+      {"t": "open", "q": "Explica con tus palabras qué es un SID y qué es el RID. Da dos RIDs que conozcas.", "m": "El SID es el identificador interno único de una cuenta o grupo. El RID es el último número del SID e identifica la cuenta dentro del equipo o dominio. Conocidos: 500 = Administrator integrado, 501 = Guest, 1000 en adelante = cuentas creadas por usuarios."},
+      {"t": "open", "q": "Menciona 3 carpetas donde el malware suele esconderse y por qué.", "m": "AppData, Temp (C:\\Windows\\Temp o %TEMP%) y ProgramData (también Downloads). Son carpetas donde un usuario sin privilegios puede escribir, así que el malware puede soltarse y persistir sin permisos de administrador."}
+    ]
+  },
+  "1-1-4": {
+    "titulo": "Examen · MAC, ARP, TCP vs UDP y puertos",
+    "intro": "Contéstalo sin mirar. Si los puertos te fallan, es normal: se memorizan con repetición, no leyendo.",
+    "preguntas": [
+      {"t": "mc", "q": "¿Para qué se usa la dirección MAC ff:ff:ff:ff:ff:ff?", "o": ["Es la MAC del gateway", "Es la dirección de broadcast: el mensaje va a todos los equipos de la red local", "Es una MAC inválida que nunca se usa", "Identifica al fabricante de la tarjeta"], "c": 1, "w": "Es el broadcast de capa 2. ARP la usa en sus solicitudes para preguntar a todos quién tiene cierta IP."},
+      {"t": "mc", "q": "¿Qué problema resuelve ARP?", "o": ["Convierte nombres de dominio en IPs", "Asigna IPs automáticamente", "Descubre la MAC que corresponde a una IP dentro de la red local", "Cifra el tráfico entre dos equipos"], "c": 2, "w": "ARP traduce IP a MAC en la red local. DNS traduce nombres a IPs y DHCP asigna IPs."},
+      {"t": "mc", "q": "Tu equipo quiere enviar un paquete a un servidor en Internet. ¿Por la MAC de quién pregunta con ARP?", "o": ["La del servidor remoto", "La de tu gateway", "La del servidor DNS", "Ninguna, ARP no se usa en ese caso"], "c": 1, "w": "La MAC solo vale en la red local. Para destinos fuera de tu red entregas el paquete al gateway."},
+      {"t": "mc", "q": "En una captura, la misma IP del gateway aparece asociada a dos MACs distintas y llegan muchas respuestas ARP que nadie pidió. ¿Qué sospechas?", "o": ["Un escaneo de puertos con nmap", "Un ataque de fuerza bruta por RDP", "ARP spoofing o poisoning, posible Man-in-the-Middle", "Una consulta DNS normal"], "c": 2, "w": "ARP no autentica las respuestas. Un atacante envía respuestas falsas para asociar la IP del gateway con su MAC."},
+      {"t": "mc", "q": "¿Cuál es una diferencia correcta entre TCP y UDP?", "o": ["TCP no usa puertos; UDP sí", "TCP es orientado a conexión y confirma la entrega; UDP no tiene conexión ni garantiza entrega", "UDP es más fiable que TCP", "TCP funciona en la capa 3 y UDP en la capa 4"], "c": 1, "w": "Ambos usan puertos y trabajan en la capa 4. TCP ofrece fiabilidad y orden; UDP es más ligero pero sin garantías."},
+      {"t": "mc", "q": "¿Cuál es el orden correcto del handshake de 3 pasos de TCP?", "o": ["SYN → ACK → SYN-ACK", "ACK → SYN → SYN-ACK", "SYN → SYN-ACK → ACK", "SYN-ACK → SYN → ACK"], "c": 2, "w": "El cliente envía SYN, el servidor responde SYN-ACK y el cliente confirma con ACK."},
+      {"t": "mc", "q": "Intentas conectarte a un puerto TCP cerrado. ¿Qué responde normalmente?", "o": ["SYN-ACK", "RST", "FIN", "Nada, siempre se ignora"], "c": 1, "w": "Cerrado responde RST; abierto responde SYN-ACK; sin respuesta suele ser un firewall (filtered). Es la base para reconocer un escaneo."},
+      {"t": "mc", "q": "Ves la conexión 192.168.1.50:51234 → 192.168.1.20:445. ¿Cómo la interpretas?", "o": ["El equipo .20 se conecta por RDP al .50", "El equipo .50 se conecta por SMB al .20, usando un puerto de origen efímero", "Es tráfico DNS entre dos servidores", "Es tráfico HTTPS hacia Internet"], "c": 1, "w": "445 es SMB. 51234 es efímero: lo elige el cliente. Ambas IPs son privadas, así que es tráfico interno."},
+      {"t": "mc", "q": "¿Qué par de puertos y servicios es correcto?", "o": ["22 = RDP, 3389 = SSH", "53 = DNS, 443 = HTTPS", "80 = HTTPS, 445 = DNS", "25 = SMB, 445 = SMTP"], "c": 1, "w": "22 SSH, 3389 RDP, 53 DNS, 443 HTTPS, 80 HTTP, 445 SMB, 25 SMTP."},
+      {"t": "mc", "q": "¿Por qué los puertos 445 y 3389 aparecen tanto en investigaciones de seguridad?", "o": ["Porque son los únicos puertos que usan TCP", "Porque dan acceso o control remoto y se usan en acceso inicial y movimiento lateral", "Porque solo los usan los antivirus", "Porque son puertos de correo"], "c": 1, "w": "SMB permite mover archivos y propagarse entre equipos Windows; RDP expuesto recibe fuerza bruta y es entrada común de ransomware."},
+      {"t": "open", "q": "Explica paso a paso cómo ARP descubre la MAC de 192.168.1.20.", "m": "1) Mi equipo envía un ARP Request por broadcast (ff:ff:ff:ff:ff:ff): «¿quién tiene 192.168.1.20? Dímelo, soy 192.168.1.50». 2) El dueño de esa IP responde con un ARP Reply unicast con su MAC. 3) Mi equipo guarda la respuesta en su caché ARP."},
+      {"t": "open", "q": "Describe el handshake de 3 pasos y qué responde un puerto abierto frente a uno cerrado.", "m": "SYN (cliente) → SYN-ACK (servidor) → ACK (cliente). Un puerto abierto responde SYN-ACK; uno cerrado responde RST; si no hay respuesta, el puerto está filtered (probablemente un firewall)."},
+      {"t": "open", "q": "Escribe de memoria los puertos de SSH, DNS, SMTP, HTTP, HTTPS, SMB y RDP.", "m": "SSH 22, DNS 53, SMTP 25, HTTP 80, HTTPS 443, SMB 445, RDP 3389."},
+      {"t": "open", "q": "Lee 192.168.1.50:51234 → 192.168.1.20:445 como si se lo explicaras a alguien: qué equipo inicia, qué servicio es y por qué podría importar.", "m": "El equipo .50 inicia la conexión desde un puerto efímero (51234) hacia el puerto 445 (SMB) del equipo .20. Ambas IPs son privadas, así que es tráfico interno. Importa porque SMB es una vía de movimiento lateral y de acceso a archivos: si esos dos equipos normalmente no hablan, podría ser propagación o robo de archivos."}
+    ]
+  },
+  "1-1-5": {
+    "titulo": "Examen · Qué es un SOC y el rol del L1",
+    "intro": "Contéstalo sin mirar tus notas.",
+    "preguntas": [
+      {"t": "mc", "q": "¿Cuáles son los tres pilares de un SOC?", "o": ["Personas, dinero y reglas", "Personas, procesos y tecnología", "Redes, servidores y firewalls", "Red Team, Blue Team y auditoría"], "c": 1, "w": "Un SOC combina personas, procesos y tecnología para vigilar, detectar, analizar y responder a amenazas."},
+      {"t": "mc", "q": "¿Cuál es la función principal de un analista L1?", "o": ["Caza amenazas de forma proactiva y analiza malware a fondo", "Diseña las reglas de detección del SIEM", "Hace el triage de alertas, documenta y escala lo que lo requiere", "Simula ataques contra la organización"], "c": 2, "w": "El L1 es el primer filtro: decide si son falsos positivos o requieren investigación, documenta y escala."},
+      {"t": "mc", "q": "¿Por qué una alerta no es lo mismo que un incidente?", "o": ["Porque una alerta es una señal que hay que verificar y puede ser una falsa alarma", "Porque las alertas solo las genera el antivirus", "Porque un incidente solo ocurre en servidores", "Porque son exactamente lo mismo"], "c": 0, "w": "Una alerta es una señal que hay que verificar. Puede ser un verdadero positivo o un falso positivo."},
+      {"t": "mc", "q": "¿Cuál es el orden correcto del ciclo de vida de una alerta?", "o": ["Investigación → detección → triage → documentación → decisión", "Triage → detección → decisión → investigación → cierre", "Detección → decisión → triage → investigación → documentación", "Detección → triage → investigación → decisión → cierre o escalamiento → documentación"], "c": 3, "w": "Primero la herramienta avisa; al final todo queda en un ticket."},
+      {"t": "mc", "q": "Salta una alerta de escaneo de puertos y resulta ser el escáner autorizado del equipo de TI. ¿Qué es?", "o": ["Verdadero positivo", "Falso positivo", "Falso negativo", "Verdadero negativo"], "c": 1, "w": "Sonó la alerta pero no había ataque real: falso positivo."},
+      {"t": "mc", "q": "Un atacante entra con credenciales robadas válidas y no salta ninguna alerta. ¿Qué es?", "o": ["Verdadero positivo", "Falso positivo", "Falso negativo", "Verdadero negativo"], "c": 2, "w": "Hay ataque real pero no hay alerta: falso negativo, el más peligroso porque nadie se entera."},
+      {"t": "mc", "q": "¿Qué problema causa tener demasiados falsos positivos?", "o": ["Que el SIEM deja de funcionar", "Fatiga de alertas: el analista deja de prestarles atención", "Que se pierde la licencia de la herramienta", "Que la red se queda sin ancho de banda"], "c": 1, "w": "Un exceso de falsas alarmas lleva a ignorar alertas por costumbre, y entre ellas puede esconderse una real."},
+      {"t": "mc", "q": "¿Qué par herramienta-función es correcto?", "o": ["SIEM: vigila procesos en cada equipo; EDR: automatiza; SOAR: centraliza logs", "SIEM: filtra tráfico; EDR: genera facturas; SOAR: cifra discos", "SIEM, EDR y SOAR son tres nombres del mismo producto", "SIEM: centraliza y correlaciona logs; EDR: vigila y responde en cada equipo; SOAR: automatiza tareas de respuesta"], "c": 3, "w": "Tablero central (SIEM), cámara en cada equipo (EDR) y ayudante automático (SOAR)."},
+      {"t": "mc", "q": "Una alerta muestra 40 eventos 4625 por RDP y luego un 4624 desde una IP externa. ¿Qué haces?", "o": ["Cerrarla como falso positivo, porque los usuarios se equivocan", "Revisar la IP de origen, la cantidad en poco tiempo y qué hizo la cuenta tras el login exitoso, y escalar si se confirma", "Ignorarla hasta que haya más alertas", "Reiniciar el equipo y esperar"], "c": 1, "w": "Mucho volumen en poco tiempo seguido de un 4624 externo apunta a fuerza bruta con posible acceso. Revisa si hubo usuario nuevo (4720) o servicio instalado (7045) y escala."},
+      {"t": "mc", "q": "¿Quién suele investigar a fondo lo que escala el L1?", "o": ["L1", "L3", "L2", "El Red Team"], "c": 2, "w": "El L2 correlaciona eventos, contiene y responde. El L3 hace threat hunting y análisis avanzado."},
+      {"t": "open", "q": "Explica con tus palabras qué es un SOC y qué hace un analista L1.", "m": "Un SOC es el conjunto de personas, procesos y tecnología que vigila, detecta, analiza y responde a amenazas de forma continua. El L1 es el primer filtro: revisa alertas, decide con evidencia si son falsos positivos o merecen investigarse, documenta y escala lo importante a L2."},
+      {"t": "open", "q": "Escribe de memoria los pasos del ciclo de vida de una alerta.", "m": "Detección → triage → investigación → decisión → cierre o escalamiento → documentación."},
+      {"t": "open", "q": "Da un ejemplo propio de verdadero positivo, falso positivo y falso negativo.", "m": "Ejemplo posible. TP: 50 logins fallidos por RDP desde una IP externa seguidos de un login exitoso, y de verdad es fuerza bruta. FP: alerta de escaneo que resulta ser el escáner autorizado de TI. FN: un atacante entra con credenciales robadas válidas con un solo login normal y no salta ninguna alerta."},
+      {"t": "open", "q": "Una alerta dice «usuario añadido al grupo Administrators fuera de horario». ¿Qué preguntas te haces antes de decidir si escalas?", "m": "Quién hizo el cambio y a quién añadió (son dos cuentas distintas), si hay un cambio autorizado (ticket de TI), si la hora y el equipo son habituales, qué pasó antes y después (fallos de login, usuario nuevo 4720, servicio 7045), qué privilegios obtiene la cuenta (local o de dominio). Termina con una decisión: si no hay justificación, escalo a L2 con la evidencia."}
+    ]
+  },
+  "1-1-6": {
+    "titulo": "Mini-checkpoint · Semana 1",
+    "intro": "Responde sin buscar. Si fallas más de 2, repite ese tema antes de seguir.",
+    "preguntas": [
+      {"t": "open", "q": "Nombra las capas OSI y un protocolo de cada una.", "m": "7 Aplicación (HTTP, DNS), 6 Presentación (TLS, formatos), 5 Sesión (NetBIOS, RPC), 4 Transporte (TCP, UDP), 3 Red (IP, ICMP), 2 Enlace de datos (Ethernet, ARP), 1 Física (cable, señales)."},
+      {"t": "open", "q": "¿Cuál es el broadcast de 10.0.5.77/24?", "m": "La red es 10.0.5.0/24 y el broadcast es 10.0.5.255."},
+      {"t": "open", "q": "Describe el handshake TCP y sus flags.", "m": "SYN (cliente) → SYN-ACK (servidor) → ACK (cliente)."},
+      {"t": "open", "q": "¿Qué hace ARP y qué mensaje usa para preguntar?", "m": "Traduce IP a MAC dentro de la red local. Pregunta con un Request por broadcast y recibe un Reply unicast."},
+      {"t": "open", "q": "¿Qué puerto usa SMB y cuál RDP?", "m": "SMB 445 y RDP 3389."},
+      {"t": "open", "q": "¿Qué comando muestra los puertos en escucha en Linux?", "m": "ss -tulpn"},
+      {"t": "open", "q": "¿Qué es un falso positivo?", "m": "Una alerta que salta cuando en realidad no hay un ataque (falsa alarma)."}
+    ]
+  },
+  "1-2-1": {
+    "titulo": "Examen · DNS",
+    "intro": "Contéstalo sin mirar tus notas.",
+    "preguntas": [
+      {"t": "mc", "q": "¿Qué hace DNS?", "o": ["Asigna IPs automáticamente", "Traduce nombres de dominio a direcciones IP", "Cifra el tráfico web", "Traduce IPs privadas a públicas"], "c": 1, "w": "DNS es la agenda de contactos de Internet: nombres a IPs."},
+      {"t": "mc", "q": "¿Qué puerto y protocolos usa DNS?", "o": ["Puerto 80, solo TCP", "Puerto 53, principalmente UDP y también TCP", "Puerto 443, solo UDP", "Puerto 67, solo UDP"], "c": 1, "w": "DNS usa el puerto 53: sobre todo UDP, y TCP para respuestas grandes o transferencias de zona."},
+      {"t": "mc", "q": "En login.banco.com.sitio-malicioso.xyz, ¿cuál es el dominio real?", "o": ["banco.com", "login.banco.com", "sitio-malicioso.xyz", "com.sitio-malicioso"], "c": 2, "w": "El dominio se lee de derecha a izquierda: TLD .xyz y dominio sitio-malicioso. Lo demás son subdominios."},
+      {"t": "mc", "q": "¿Qué registro indica a qué servidores se entrega el correo de un dominio?", "o": ["A", "NS", "MX", "PTR"], "c": 2, "w": "MX = mail exchanger. Un número menor significa mayor prioridad."},
+      {"t": "mc", "q": "Un dominio tiene MX con preferencias 20, 5 y 10. ¿A cuál se intenta entregar primero?", "o": ["La de 20", "La de 10", "La de 5", "A todas a la vez, sin orden"], "c": 2, "w": "Se intenta primero el número más bajo (5), y si falla se pasa al siguiente (10, luego 20)."},
+      {"t": "mc", "q": "¿En qué tipo de registro se publica el SPF de un dominio?", "o": ["TXT", "A", "CNAME", "SOA"], "c": 0, "w": "SPF, DKIM y DMARC se publican en registros TXT. DMARC vive en _dmarc.dominio.com."},
+      {"t": "mc", "q": "Un dominio usa un TTL muy bajo y cambia de IP constantemente. ¿Qué técnica sugiere?", "o": ["Typosquatting", "Fast flux", "DNS over HTTPS", "ARP spoofing"], "c": 1, "w": "Fast flux: TTL bajo e IPs cambiantes para dificultar el bloqueo."},
+      {"t": "mc", "q": "Un equipo genera cientos de respuestas NXDOMAIN seguidas con nombres sin sentido. ¿Qué sospechas?", "o": ["Un DGA: malware probando dominios generados automáticamente", "Una actualización normal de Windows", "Un ping sweep", "Un escaneo de puertos"], "c": 0, "w": "Muchos NXDOMAIN con nombres aleatorios son la huella clásica de un algoritmo de generación de dominios (DGA)."},
+      {"t": "open", "q": "Describe el recorrido de una resolución DNS desde que escribes la URL.", "m": "1) Caché local y archivo hosts. 2) Si no está, el stub resolver pregunta al resolver recursivo (router o ISP). 3) El resolver pregunta a los servidores raíz, que lo mandan al servidor del TLD. 4) El TLD lo manda al servidor autoritativo del dominio. 5) El autoritativo da la IP. 6) El resolver la guarda en caché y responde al equipo."},
+      {"t": "open", "q": "¿Qué diferencia hay entre un resolver recursivo y un servidor autoritativo?", "m": "El resolver recursivo hace todo el recorrido por el cliente y cachea las respuestas. El servidor autoritativo es el que tiene la respuesta oficial de esa zona."},
+      {"t": "open", "q": "Nombra dos indicadores de un túnel DNS.", "m": "Subdominios larguísimos y codificados, y mucho volumen de consultas hacia un solo dominio. También pueden verse registros TXT inusualmente largos."}
+    ]
+  },
+  "1-2-2": {
+    "titulo": "Examen · DHCP, ICMP y NAT",
+    "intro": "Contéstalo sin mirar tus notas.",
+    "preguntas": [
+      {"t": "mc", "q": "¿Cuál es el orden de los mensajes DORA?", "o": ["Discover, Offer, Request, Acknowledge", "Offer, Discover, Acknowledge, Request", "Request, Offer, Discover, Acknowledge", "Discover, Request, Offer, Acknowledge"], "c": 0, "w": "El cliente descubre (D), el servidor ofrece (O), el cliente solicita (R) y el servidor confirma (A)."},
+      {"t": "mc", "q": "¿Qué puertos UDP usa DHCP?", "o": ["53 y 80", "67 (servidor) y 68 (cliente)", "20 y 21", "22 y 23"], "c": 1, "w": "Servidor en 67 y cliente en 68."},
+      {"t": "mc", "q": "¿Por qué el Discover usa 0.0.0.0 como origen?", "o": ["Porque el cliente aún no tiene IP", "Porque es una IP pública", "Porque DHCP no usa IPs", "Por seguridad, para ocultar su identidad"], "c": 0, "w": "Todavía no tiene IP. Usa 0.0.0.0 de origen y el broadcast 255.255.255.255 de destino."},
+      {"t": "mc", "q": "¿Qué tipos de ICMP corresponden al ping y a su respuesta?", "o": ["3 y 11", "8 y 0", "0 y 8", "11 y 3"], "c": 1, "w": "Tipo 8 = Echo Request, tipo 0 = Echo Reply."},
+      {"t": "mc", "q": "¿Cómo funciona traceroute?", "o": ["Envía paquetes con TTL creciente y cada router responde Time Exceeded", "Escanea todos los puertos del destino", "Pregunta al DNS la ruta", "Usa ARP para descubrir routers"], "c": 0, "w": "Con TTL=1, 2, 3… cada router descarta el paquete y responde ICMP tipo 11 (Time Exceeded), así se arma el camino."},
+      {"t": "mc", "q": "Haces ping a un equipo y no responde. ¿Qué puedes concluir?", "o": ["Que está apagado", "Que no tiene IP", "No necesariamente: un firewall puede estar bloqueando el ping", "Que tiene un virus"], "c": 2, "w": "Muchos firewalls, incluido el de Windows por defecto, bloquean las peticiones de ping entrantes."},
+      {"t": "mc", "q": "¿Qué hace PAT?", "o": ["Asigna IPs por DHCP", "Permite que muchos equipos compartan una IP pública, distinguidos por el puerto de origen", "Cifra el tráfico de la red", "Traduce nombres a IPs"], "c": 1, "w": "El router guarda en su tabla NAT la equivalencia IP privada:puerto → IP pública:puerto."},
+      {"t": "mc", "q": "¿Es NAT un firewall?", "o": ["Sí, bloquea todo el tráfico saliente", "No: dificulta conexiones entrantes pero no impide lo que el malware inicia hacia afuera", "Sí, es su función principal", "Solo si usas IPv6"], "c": 1, "w": "NAT no es un firewall. El malware dentro de la red inicia la conexión hacia afuera y NAT no lo impide."},
+      {"t": "open", "q": "¿Qué es un rogue DHCP server y qué daño puede causar?", "m": "Un servidor DHCP falso puesto por un atacante en la red. Puede entregar un gateway o DNS maliciosos y así redirigir o interceptar el tráfico de los equipos."},
+      {"t": "open", "q": "Desde fuera solo se ve una IP pública. Como L1, ¿cómo averiguas qué equipo interno generó el tráfico?", "m": "Revisando los logs del NAT o del firewall (la tabla de traducciones) y, si la IP interna la asigna DHCP, los logs de DHCP para saber qué equipo tenía esa IP en ese momento."}
+    ]
+  },
+  "1-2-3": {
+    "titulo": "Examen · Permisos NTFS, servicios y tareas programadas",
+    "intro": "Contéstalo sin mirar tus notas.",
+    "preguntas": [
+      {"t": "mc", "q": "¿Qué es una ACL y qué es una ACE?", "o": ["ACL es un virus; ACE es un antivirus", "ACL es la lista completa de permisos de un objeto; ACE es cada línea de esa lista", "ACL es un tipo de cuenta; ACE es un grupo", "Son lo mismo"], "c": 1, "w": "Una ACL contiene ACEs. Cada ACE dice, por ejemplo, «el grupo Users puede leer»."},
+      {"t": "mc", "q": "Un usuario tiene Lectura por un grupo y Denegar Lectura por otro. ¿Qué pasa?", "o": ["Puede leer, porque Allow gana", "No puede leer, porque Deny gana siempre", "Depende del orden alfabético", "Se cancelan y Windows pregunta"], "c": 1, "w": "Los permisos se suman, pero un Deny explícito gana siempre sobre un Allow."},
+      {"t": "mc", "q": "Una carpeta compartida por SMB tiene permiso NTFS de Modificar y permiso de recurso compartido de Solo lectura. ¿Qué puede hacer alguien que accede por red?", "o": ["Modificar", "Solo leer, porque gana el más restrictivo", "Nada", "Control total"], "c": 1, "w": "Por red se aplican NTFS y Share a la vez y gana el más restrictivo."},
+      {"t": "mc", "q": "¿Qué cuenta de ejecución es la más privilegiada para un servicio?", "o": ["LocalService", "NetworkService", "LocalSystem", "Un usuario estándar"], "c": 2, "w": "LocalSystem tiene los privilegios más altos. Un servicio malicioso con esa cuenta corre con el máximo poder."},
+      {"t": "mc", "q": "¿Qué Event ID indica que se creó una tarea programada?", "o": ["4698", "7045", "4625", "1102"], "c": 0, "w": "4698 = tarea creada, 4699 = eliminada, 4702 = actualizada. 7045 es servicio instalado."},
+      {"t": "mc", "q": "¿Qué Event ID indica que se instaló un servicio nuevo?", "o": ["4698", "7045", "4624", "4720"], "c": 1, "w": "7045 (log System) y 4697 (log Security) registran la instalación de un servicio."},
+      {"t": "mc", "q": "¿Cuál de estas tareas programadas es más sospechosa?", "o": ["Una que ejecuta el antivirus a las 3:00", "Una llamada parecida a una actualización de Windows que lanza powershell.exe con un parámetro largo codificado desde AppData", "Una de mantenimiento de disco de Microsoft en System32", "Una que abre el navegador al iniciar sesión"], "c": 1, "w": "Nombre que imita uno legítimo, shell con parámetros codificados y ruta de usuario son señales clásicas."},
+      {"t": "mc", "q": "¿Qué es la herencia de permisos?", "o": ["Que los permisos pasan de un usuario a otro al borrar la cuenta", "Que las subcarpetas y archivos reciben por defecto los permisos de la carpeta padre", "Que un permiso Deny se convierte en Allow", "Que el propietario pierde sus permisos"], "c": 1, "w": "La herencia puede hacer que un permiso «aparezca» donde nadie lo puso a mano."},
+      {"t": "open", "q": "Nombra las partes de una tarea programada y da un ejemplo de cada una.", "m": "Desencadenador (cuándo: todos los días a las 3:00, al iniciar sesión), acción (qué ejecuta: un script o programa), condiciones (requisitos extra: solo con corriente) y cuenta (con qué usuario corre: SYSTEM o un usuario)."},
+      {"t": "open", "q": "¿Por qué los atacantes usan tareas programadas?", "m": "Para persistencia: sobreviven reinicios, se crean desde la línea de comandos sin interfaz, pueden correr como SYSTEM y se pueden crear en un equipo remoto, lo que ayuda al movimiento lateral. En MITRE ATT&CK es la técnica T1053."}
+    ]
+  },
+  "1-2-6": {
+    "titulo": "Mini-checkpoint · Semana 2",
+    "intro": "Responde sin buscar.",
+    "preguntas": [
+      {"t": "open", "q": "Tipos de registro DNS y para qué sirven.", "m": "A (IPv4), AAAA (IPv6), CNAME (alias), MX (servidores de correo), TXT (texto: SPF, DKIM, DMARC, verificaciones), NS (servidores autoritativos), PTR (de IP a nombre), SOA (datos administrativos de la zona)."},
+      {"t": "open", "q": "¿Qué es DORA?", "m": "El proceso de DHCP: Discover, Offer, Request, Acknowledge."},
+      {"t": "open", "q": "¿Qué lees en una captura HTTP que no puedes leer en HTTPS?", "m": "En HTTP lees la petición y la respuesta completas en texto plano (método, host, headers, contenido). En HTTPS solo ves IPs, puertos, tamaños y el SNI; el contenido va cifrado."},
+      {"t": "open", "q": "¿Qué significa chmod 750?", "m": "El propietario tiene rwx (7), el grupo r-x (5) y los demás ningún permiso (0)."},
+      {"t": "open", "q": "¿Dónde se guardan los usuarios en Linux?", "m": "En /etc/passwd (las contraseñas con hash están en /etc/shadow)."}
+    ]
+  },
+  "1-3-6": {
+    "titulo": "Mini-checkpoint · Semana 3",
+    "intro": "Responde sin buscar.",
+    "preguntas": [
+      {"t": "open", "q": "¿Qué hace -sS en nmap y cómo se ve en una captura?", "m": "Es un SYN scan (half-open): envía SYN y no completa el handshake. Si recibe SYN-ACK el puerto está abierto; si recibe RST, cerrado. En una captura se ve un solo origen mandando muchos SYN a puertos distintos en poco tiempo, con muchos RST de vuelta."},
+      {"t": "open", "q": "¿Qué comando lista servicios en Linux y en Windows?", "m": "Linux: systemctl list-units --type=service (o systemctl status). Windows: Get-Service (PowerShell) o sc query (CMD)."},
+      {"t": "open", "q": "¿Qué hace Get-NetTCPConnection?", "m": "Lista las conexiones TCP del equipo con estado, direcciones y puertos locales y remotos, y el proceso propietario."},
+      {"t": "open", "q": "¿Cómo copias un archivo a otra máquina por SSH?", "m": "Con scp: scp archivo usuario@ip:/ruta/destino"},
+      {"t": "open", "q": "¿Qué diferencia hay entre un puerto closed y uno filtered?", "m": "Closed responde con RST (el host está y no hay servicio). Filtered no responde (o responde con un error ICMP) porque un firewall descarta los paquetes."}
+    ]
+  },
+  "1-4-6": {
+    "titulo": "Mini-checkpoint · Semana 4",
+    "intro": "Responde sin buscar.",
+    "preguntas": [
+      {"t": "open", "q": "¿Qué Event ID es un login fallido? ¿Y la creación de un usuario?", "m": "4625 es login fallido y 4720 es usuario creado."},
+      {"t": "open", "q": "¿Cómo cuentas intentos fallidos por IP en Linux?", "m": "grep \"Failed password\" auth.log | awk '{print $11}' | sort | uniq -c | sort -nr (ajustando la columna de la IP a tu log)."},
+      {"t": "open", "q": "¿Qué indica una cadena de 4625 seguida de un 4624?", "m": "Posible fuerza bruta con éxito: varios fallos y luego un login válido. Hay que revisar IP de origen, cantidad y velocidad, y qué hizo la cuenta después."},
+      {"t": "open", "q": "¿Qué tipo de logon es RDP?", "m": "El tipo 10 (RemoteInteractive). El 2 es interactivo local y el 3 es de red."},
+      {"t": "open", "q": "¿Por qué un 1102 es sospechoso?", "m": "Indica que se borró el log de auditoría. Un atacante puede hacerlo para ocultar sus huellas."}
+    ]
+  },
+  "1-5-6": {
+    "titulo": "Checkpoint final del mes 1 · Parte oral",
+    "intro": "Responde en voz alta o por escrito, sin buscar. Aprobado con 8 de 10. Después haz las partes prácticas (PCAP, logs y Linux) que están en la sección de práctica.",
+    "preguntas": [
+      {"t": "open", "q": "Explica qué pasa desde que escribes una URL hasta que ves la página.", "m": "Se revisa la caché DNS y el archivo hosts; si no, se consulta al resolver (UDP 53) para obtener la IP. Con la IP, el equipo usa ARP para conocer la MAC del gateway. Se hace el handshake TCP (SYN, SYN-ACK, ACK). Si es HTTPS, se negocia TLS (Client Hello, Server Hello). Se envía la petición HTTP y llega la respuesta, que el navegador dibuja."},
+      {"t": "open", "q": "¿Qué subred es 172.16.20.130/26?", "m": "Un /26 tiene bloques de 64. 130 cae en el bloque 128-191, así que la red es 172.16.20.128/26, el broadcast 172.16.20.191 y los hosts van de .129 a .190."},
+      {"t": "open", "q": "¿Cómo reconoces un escaneo en una captura?", "m": "Un solo origen envía muchos SYN a puertos distintos en poco tiempo y recibe RST de los puertos cerrados y SYN-ACK de los abiertos."},
+      {"t": "open", "q": "¿Qué indica una cadena de 4625 seguida de un 4624?", "m": "Posible fuerza bruta exitosa. Revisa la IP de origen, la cantidad y velocidad de los fallos y qué hizo la cuenta después (usuario nuevo, servicio, procesos)."},
+      {"t": "open", "q": "Puertos de SMB, RDP, DNS y SSH.", "m": "SMB 445, RDP 3389, DNS 53 y SSH 22."},
+      {"t": "open", "q": "Filtros de Wireshark para DNS, HTTP y un host concreto.", "m": "dns, http y ip.addr == x.x.x.x (para IPv6, ipv6.addr == ...)."},
+      {"t": "open", "q": "Diferencia entre servicio y proceso en Windows.", "m": "Un servicio es un proceso en segundo plano, administrado por services.exe, que normalmente arranca con el sistema. Todo servicio activo es un proceso, pero no todo proceso es un servicio."},
+      {"t": "open", "q": "¿Qué hace chmod 750?", "m": "Propietario rwx, grupo r-x y otros sin permisos."},
+      {"t": "open", "q": "Diferencia entre falso positivo y verdadero positivo.", "m": "Verdadero positivo: la alerta es correcta, hay un ataque real. Falso positivo: la alerta salta pero no hay ataque real."},
+      {"t": "open", "q": "¿Qué haces primero al recibir una alerta de login fallido repetido?", "m": "Reviso la IP de origen (interna o externa, conocida o no), la cantidad y velocidad de los intentos, los usuarios probados, si hubo un login exitoso después, qué tan crítico es el activo y si es actividad esperada. Decido con evidencia si cierro o escalo."}
+    ]
+  }
+}
